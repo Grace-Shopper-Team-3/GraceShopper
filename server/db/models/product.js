@@ -2,48 +2,48 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Product = db.define('product', {
-  name: {
+  title: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true,
-    },
+      notEmpty: true
+    }
   },
   description: {
     type: Sequelize.TEXT,
     allowNull: false,
     validate: {
-      notEmpty: true,
+      notEmpty: true
     },
     instructions: {
       type: Sequelize.TEXT,
       allowNull: false,
       validate: {
-        notEmpty: true,
-      },
-    },
+        notEmpty: true
+      }
+    }
   },
   imageUrl: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true,
-    },
+      notEmpty: true
+    }
   },
   price: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
-      notEmpty: true,
-    },
+      notEmpty: true
+    }
   },
   quantity: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
-      notEmpty: true,
-    },
-  },
+      notEmpty: true
+    }
+  }
 })
 
 module.export = Product
