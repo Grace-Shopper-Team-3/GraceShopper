@@ -1,29 +1,81 @@
+//seed.js
 'use strict'
-
+const {green, red} = require('chalk')
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Product, Order, ProductOrder} = require('../server/db/models')
+const {makeManyPlants} = require('../server/db/seed_methods')
+
+const users = [
+  {
+    firstName: 'Danielle',
+    lastName: 'Sisk',
+    email: 'ds@hotmail.com',
+    password: 'thisiscool',
+    googleId: null,
+    address: '77 Hanover Square',
+    isAdmin: true
+  },
+  {
+    firstName: 'Lisa',
+    lastName: 'Diaz',
+    email: 'ld@yahoo.com',
+    password: 'super',
+    googleId: null,
+    address: '20 Hanover Square',
+    isAdmin: false
+  },
+  {
+    firstName: 'Kelsey',
+    lastName: 'Wallace',
+    email: 'k9@aol.com',
+    password: 'k9',
+    googleId: null,
+    address: '1 Hanover Square',
+    isAdmin: false
+  },
+  {
+    firstName: 'Santa',
+    lastName: 'Clause',
+    email: 'lily@yahoo.com',
+    password: 'imlily',
+    googleId: null,
+    address: '4 Hanover Square',
+    isAdmin: true
+  },
+  {
+    firstName: 'Kate',
+    lastName: 'Norton',
+    email: 'kate@yahoo.com',
+    password: 'teamthree!',
+    googleId: null,
+    address: '9 Hanover Square',
+    isAdmin: true
+  },
+  {
+    firstName: 'Veronica',
+    lastName: 'Miller',
+    email: 'vv@aol.com',
+    password: 'HELLO',
+    googleId: null,
+    address: '5 Hanover Square',
+    isAdmin: true
+  }
+]
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({
-      firstName: 'Cody',
-      lastName: 'Smith',
-      email: 'cody@email.com',
-      password: '123'
-    }),
-    User.create({
-      firstName: 'Tex',
-      lastName: 'Murphy',
-      email: 'murphy@email.com',
-      password: '123'
-    })
-  ])
+  // users
+  const seedUsers = await Promise.all(users.map(user => User.create(user)))
+  console.log(`seeded ${seedUsers.length} users`)
 
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded successfully`)
+  // products
+  const manyProducts = makeManyPlants(101)
+  const seedProducts = await Promise.all(
+    manyProducts.map(plant => Product.create(plant))
+  )
+  console.log(`seeded ${seedProducts.length} products`)
 }
 
 // We've separated the `seed` function from the `runSeed` function.
