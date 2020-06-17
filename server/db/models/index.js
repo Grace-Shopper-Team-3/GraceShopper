@@ -15,6 +15,7 @@ const ProductOrder = require('./productorder')
  * for example, we can say: const {User} = require('../db/models')
  * instead of: const User = require('../db/models/user')
  */
+
 Order.belongsTo(User)
 User.hasMany(Order)
 
