@@ -3,8 +3,19 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const User = db.define('user', {
-  name: {
-    type: Sequelize.STRING
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   email: {
     type: Sequelize.STRING,
@@ -39,8 +50,6 @@ const User = db.define('user', {
     defaultValue: false
   }
 })
-
-module.exports = User
 
 /**
  * instanceMethods
@@ -79,3 +88,5 @@ User.beforeUpdate(setSaltAndPassword)
 User.beforeBulkCreate(users => {
   users.forEach(setSaltAndPassword)
 })
+
+module.exports = User

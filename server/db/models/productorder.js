@@ -5,12 +5,10 @@ const ProductOrder = db.define('productorder', {
   quantity: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    defaultValue: 1,
-  },
-  orderPrice: {
-    type: Sequelize.FLOAT,
-    defaultValue: 0,
-  },
+    validate: {
+      notEmpty: true
+    }
+  }
 })
 
 module.exports = ProductOrder

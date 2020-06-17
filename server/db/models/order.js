@@ -3,22 +3,18 @@ const db = require('../db')
 
 const Order = db.define('order', {
   totalPrice: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  email: {
-    type: Sequelize.STRING,
-    unique: true,
-    allowNull: false,
+    type: Sequelize.DECIMAL,
+    allowNull: false
   },
   date: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: false
   },
   status: {
-    type: Sequelize.ENUM('completed', 'pending', 'purchased', 'canceled'),
+    type: Sequelize.ENUM('cart', 'in-progress', 'purchased', 'canceled'),
     allowNull: false,
-  },
+    defaultValue: 'cart'
+  }
 })
 
 module.exports = Order
