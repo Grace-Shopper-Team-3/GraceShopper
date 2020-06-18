@@ -1,16 +1,35 @@
 import React from 'react'
 import {connect} from 'react-redux'
-// import {fetchProducts} from '../store'
+import {fetchProducts} from '../store/products'
 import {Link} from 'react-router-dom'
 import ProductCard from './productcard'
 
 class ProductList extends React.Component {
+  componentDidMount() {
+    this.props.getProducts()
+  }
+
   render() {
+    const {user, products} = this.props
     return (
       <div>
         <h1>All Plants</h1>
+
+        {/* <div>
+          {products.map((product) => {
+            return (
+              <ProductCard
+                key={product.id}
+                name={product.name}
+                price={product.price}
+                imageUrl={product.imageUrl}
+                id={product.id}
+              />
+            )
+          })}
+        </div> */}
+
         <div>
-          {/* map through products, render ProductCard for each item */}
           <ProductCard />
           <ProductCard />
           <ProductCard />
@@ -20,8 +39,13 @@ class ProductList extends React.Component {
   }
 }
 
-// const mapStateToProps = state => ()
+const mapStateToProps = state => ({
+  products: state.products,
+  user: state.user
+})
 
-// const mapDispatchToProps = dispatch => ()
+const mapDispatchToProps = dispatch => ({
+  getProducts: () => dispatch(fetchProducts())
+})
 
-export default connect(null)(ProductList)
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList)
