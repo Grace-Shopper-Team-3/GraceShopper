@@ -7,13 +7,6 @@ const ProductOrder = db.define('productorder', {
     allowNull: false,
     validate: {
       notEmpty: true
-    },
-    purchasePrice: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
     }
   }
 })
