@@ -40,7 +40,7 @@ function makeRandomDescription(description) {
   return smallDescription
 }
 function makeRandomPrice() {
-  return Math.floor(Math.random() * (80.99 - 1)) + 0.99
+  return Math.floor(Math.random() * (80 - 1))
   // concerned that dollar sign might change type to string
   //  can we change model price type to support decimals?
 }
