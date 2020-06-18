@@ -3,26 +3,11 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const User = db.define('user', {
-  firstName: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
-  },
-  lastName: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
-  },
   email: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false
   },
-
   password: {
     type: Sequelize.STRING,
     // Making `.password` act like a func hides it when serializing to JSON.
@@ -41,15 +26,10 @@ const User = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
-  },
-  address: {
-    type: Sequelize.STRING
-  },
-  isAdmin: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false
   }
 })
+
+module.exports = User
 
 /**
  * instanceMethods
@@ -88,5 +68,3 @@ User.beforeUpdate(setSaltAndPassword)
 User.beforeBulkCreate(users => {
   users.forEach(setSaltAndPassword)
 })
-
-module.exports = User
