@@ -11,12 +11,14 @@ class ProductList extends React.Component {
 
   render() {
     const {user, products} = this.props
+    console.log('products', products)
+
     return (
       <div>
         <h1>All Plants</h1>
 
-        {/* <div>
-          {products.map((product) => {
+        <div>
+          {products.map(product => {
             return (
               <ProductCard
                 key={product.id}
@@ -27,12 +29,6 @@ class ProductList extends React.Component {
               />
             )
           })}
-        </div> */}
-
-        <div>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
         </div>
       </div>
     )
