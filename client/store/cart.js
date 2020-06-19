@@ -29,9 +29,9 @@ export const setCartThunk = cartProduct => {
     dispatch(setCart(response.data))
   }
 }
-export const addCartThunk = cartProduct => {
+export const addCartThunk = (productId, userId) => {
   return async dispatch => {
-    const response = await axios.post('/api/cart/add', cartProduct)
+    const response = await axios.post('/api/cart/add', productId, userId)
     dispatch(setCart(response.data))
   }
 }
