@@ -24,15 +24,16 @@ class SingleProduct extends Component {
     const productInventory = this.props.selectedProduct.warehouseInv
 
     return (
-      <div>
-        <h1> {productName}</h1>
-        <h2>
-          {' '}
-          <img src={productImageUrl} alt="product-photo" />{' '}
-        </h2>
-        <h3> {productPrice}</h3>
-        <h3> {productInventory}</h3>
-        <div> {productDescription}</div>
+      <div className="page">
+        <div className="single-product">
+          <img src={productImageUrl} alt="product-photo" />
+          <div className="single-product-details">
+            <h1>{productName}</h1>
+            <h3>${productPrice}.00</h3>
+            <p>{productDescription}</p>
+            <button>Add to Cart</button>
+          </div>
+        </div>
       </div>
     )
   }

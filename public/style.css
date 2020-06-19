@@ -1,21 +1,63 @@
 body {
   font-family: sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 a {
   text-decoration: none;
+  color: black;
 }
 
 label {
   display: block;
 }
 
+nav {
+  height: 4em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: green;
+}
+
 nav a {
   display: inline-block;
   margin: 1em;
+  color: white;
 }
 
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+.page {
+  width: 60%;
+  margin: 5vh auto 0 auto;
+}
+
+.page > h1 {
+  color: green;
+  margin-top: 30px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  grid-gap: 50px;
+}
+
+.products-grid-item > img {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.single-product {
+  display: flex;
+  justify-content: space-between;
+}
+
+.single-product img {
+  max-width: 500px;
 }
