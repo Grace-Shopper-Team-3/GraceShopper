@@ -1,6 +1,9 @@
 const router = require('express').Router()
 const {User, Product, Order, ProductOrder} = require('../db/models')
 
+const {adminOnly} = require('../utils')
+
+// Get all products
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll()
@@ -10,6 +13,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// Get a single product
 router.get('/:id', async (req, res, next) => {
   try {
     const singleProduct = await Product.findByPk(req.params.id)
@@ -19,23 +23,35 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+// Add a new product for admins
+router.post('/', adminOnly, async (req, res, next) => {
   try {
-    const foundProduct = await Product.create(req.body)
-    res.status(201).send(foundProduct)
+    const newProduct = await Product.create(req.body)
+    res.status(201).json(newProduct)
   } catch (error) {
     next(error)
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+// Edit a product for admins
+router.put('/:id', adminOnly, async (req, res, next) => {
   try {
-    const deletedProduct = await Product.destroy({
+    const product = await Product.findByPk(req.params.id)
+    res.status(201).json(product)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// Delete a product for admins
+router.delete('/:id', adminOnly, async (req, res, next) => {
+  try {
+    await Product.destroy({
       where: {
         id: req.params.id
       }
     })
-    res.status(204).send(deletedProduct)
+    res.sendStatus(204)
   } catch (error) {
     next(error)
   }
