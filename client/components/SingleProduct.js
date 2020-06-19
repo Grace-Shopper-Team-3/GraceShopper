@@ -50,10 +50,10 @@ class SingleProduct extends Component {
             <h1>{productName}</h1>
             <h3>${productPrice}.00</h3>
             <p>{productDescription}</p>
+            <button type="button" onClick={this.addToCart(productId, userId)}>
+              Add to Cart
+            </button>
           </div>
-          <button type="button" onClick={this.addToCart(productId, userId)}>
-            Add to Cart
-          </button>
         </div>
       </div>
     )

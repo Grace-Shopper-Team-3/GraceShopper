@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const {User} = require('../db/models')
 
-router.get('/', async (req, res, next) => {
+const {adminOnly} = require('../utils')
+
+router.get('/', adminOnly, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
@@ -24,16 +26,17 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  try {
-    const foundUser = await User.create(req.body)
-    res.status(201).send(foundUser)
-  } catch (error) {
-    next(error)
-  }
-})
+// router.post('/', async (req, res, next) => {
+//   try {
 
-router.delete('/:id', async (req, res, next) => {
+//     const foundUser = await User.create(req.body)
+//     res.status(201).send(foundUser)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
+
+router.delete('/:id', adminOnly, async (req, res, next) => {
   try {
     const deletedUser = await User.destroy({
       where: {
