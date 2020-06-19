@@ -13,8 +13,7 @@ class ProductList extends React.Component {
     const {user, products} = this.props
     return (
       <div className="page">
-        <h1>All Plants</h1>
-
+        <h1>Shop all plants</h1>
         <div className="products-grid">
           {products.map(product => {
             return (

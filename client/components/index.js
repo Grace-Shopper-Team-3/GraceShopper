@@ -5,7 +5,10 @@
  */
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
-export {default as ProductList} from './productlist'
-export {default as ProductCard} from './productcard'
+export {default as ProductList} from './ProductList'
+export {default as ProductCard} from './ProductCard'
 export {default as SingleProduct} from './SingleProduct'
+export {default as Cart} from './Cart'
+export {default as Checkout} from './Checkout'
+export {default as Confirmation} from './Confirmation'
 export {Login, Signup} from './auth-form'
