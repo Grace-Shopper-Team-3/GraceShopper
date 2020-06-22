@@ -1,9 +1,14 @@
 import axios from 'axios'
 
+//action types
 const ADD_PRODUCT = 'ADD_PRODUCT'
 const GET_CART = 'GET_CART'
 const REMOVE_PRODUCT = 'REMOVE_PRODUCT'
-const UPDATE_QUANT = 'UPDATE_QUANT'
+
+// const SET_CART = 'SET_CART'
+// const UPDATE_CART = 'UPDATE_CART'
+
+//action creators
 
 export const getCart = products => ({
   type: GET_CART,
@@ -19,10 +24,17 @@ export const removeProduct = product => ({
   type: REMOVE_PRODUCT,
   product
 })
-export const updateQuantity = cart => ({
-  type: UPDATE_QUANT,
-  cart
-})
+
+// export const setCart = cart => ({
+//   type: SET_CART,
+//   cart
+// })
+
+// export const updateCart = () => {
+//   return {
+//     type: UPDATE_CART
+//   }
+// }
 
 //thunks
 export const getCartThunk = userId => {
@@ -59,22 +71,6 @@ export const deleteCartProductThunk = (product, userId) => {
     }
   }
 }
-export const updateQuantityThunk = (product, quantity, userId) => {
-  return async dispatch => {
-    try {
-      const res = await axios.patch(`/api/users/cart/${userId}/${product.id}`, {
-        quantity: quantity
-      })
-      const updatedQuant = res.data
-      dispatch(updateQuantity(updatedQuant))
-    } catch (error) {
-      dispatch(error)
-    }
-  }
-}
-
-// should we also have a checkout thunk here?
-// a thunk that resets the cart and sets the items of the cart to an actual order
 
 const initialState = {
   products: []
@@ -93,9 +89,6 @@ const cartReducer = (state = initialState, action) => {
         product => product.id !== action.productId
       )
       return {...state, products: updatedCart}
-    }
-    case UPDATE_QUANT: {
-      return {...state, cart: action.cart}
     }
     default:
       return state
