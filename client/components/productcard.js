@@ -9,8 +9,6 @@ const ProductCard = props => {
         <img src={imageUrl} alt="product-photo" />
         <h3>{name}</h3>
         <p>${price}.00</p>
-
-        <button>Add to Cart</button>
       </div>
     </Link>
   )

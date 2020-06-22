@@ -19,7 +19,7 @@ router.get('/', adminOnly, async (req, res, next) => {
 })
 
 // get a single user
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', adminOnly, async (req, res, next) => {
   try {
     const singleUser = await User.findByPk(req.params.id)
     res.json(singleUser)
@@ -42,8 +42,8 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
   }
 })
 
-// get a user's cart
-router.get('/cart/:userId', async (req, res, next) => {
+// get a user's cart for admin settings
+router.get('/cart/:userId', adminOnly, async (req, res, next) => {
   try {
     const cartItems = await Product.findAll({
       include: {
@@ -61,7 +61,7 @@ router.get('/cart/:userId', async (req, res, next) => {
 })
 
 // add a product to a user's cart
-router.put('/cart/:userId', async (req, res, next) => {
+router.put('/cart/:userId', adminOnly, async (req, res, next) => {
   try {
     // find the product in the db
     const product = await Product.findByPk(req.body.id)
