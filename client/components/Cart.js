@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {getCartThunk} from '../store/cart'
+import {getCartThunk, deleteCartProductThunk} from '../store/cart'
 
 class Cart extends React.Component {
   componentDidMount() {
@@ -10,11 +10,14 @@ class Cart extends React.Component {
     getCart(userId)
   }
 
+  deleteFromCart = product => {
+    const userId = this.props.user.id
+    this.props.deleteItem(product.id, userId)
+  }
+
   render() {
     const {user} = this.props
     const {cartItems} = this.props
-
-    console.log('cartitems', cartItems)
 
     if (cartItems.length > 0) {
       return (
@@ -22,13 +25,26 @@ class Cart extends React.Component {
           <h1>My Cart</h1>
           <div className="cart-grid">
             {cartItems.map(item => (
-              <div key={item.id}>
-                <h3>{item.name}</h3>
-                <p>${item.price}.00</p>
-                <img src={item.imageUrl} alt="product" />
+              <div key={item.id} className="cart-item">
+                <div>
+                  <h3>{item.name}</h3>
+                  <p>${item.price}.00</p>
+                  <img src={item.imageUrl} alt="product" />
+                </div>
+                <div className="cart-item-buttons">
+                  <button>Increase Quantity</button>
+                  <button>Decrease Quantity</button>
+                  <button
+                    type="submit"
+                    onClick={() => this.deleteFromCart(item)}
+                  >
+                    Delete Item
+                  </button>
+                </div>
               </div>
             ))}
-
+          </div>
+          <div className="cart-checkout-button">
             <Link to={`/checkout/${user.id}`}>
               <button>Checkout</button>
             </Link>
@@ -53,6 +69,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getCart: userId => {
     dispatch(getCartThunk(userId))
+  },
+  deleteItem: (product, userId) => {
+    dispatch(deleteCartProductThunk(product, userId))
   }
 })
 
