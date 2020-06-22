@@ -5,8 +5,8 @@ const ProductOrder = require('./productorder')
 
 const Order = db.define('order', {
   date: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING
+    // allowNull: false
   },
   status: {
     type: Sequelize.ENUM('cart', 'in-progress', 'purchased', 'canceled'),

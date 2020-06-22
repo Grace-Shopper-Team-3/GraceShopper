@@ -1,34 +1,37 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-// import thunks from store
+import {getCartThunk} from '../store/cart'
 
 class Cart extends React.Component {
-  componentDidMount() {}
+  componentDidMount() {
+    const userId = this.props.user.id
+    const {getCart} = this.props
+    getCart(userId)
+  }
 
   render() {
     const {user} = this.props
+    const {cartItems} = this.props
 
-    const cartItems = ['item']
-    // const {cartItems} = this.props
+    console.log('cartitems', cartItems)
 
     if (cartItems.length > 0) {
       return (
         <div className="page">
           <h1>My Cart</h1>
           <div className="cart-grid">
-            <div className="cart-item">
-              <p>item name</p>
-              <p>price</p>
-              <p>quantity</p>
-              <p>image</p>
-            </div>
-            <div className="cart-summary">
-              <p>Cart total: $50</p>
-              <Link to={`/checkout/${user.id}`}>
-                <button> Checkout </button>
-              </Link>
-            </div>
+            {cartItems.map(item => (
+              <div key={item.id}>
+                <h3>{item.name}</h3>
+                <p>${item.price}.00</p>
+                <img src={item.imageUrl} alt="product" />
+              </div>
+            ))}
+
+            <Link to={`/checkout/${user.id}`}>
+              <button>Checkout</button>
+            </Link>
           </div>
         </div>
       )
@@ -43,14 +46,14 @@ class Cart extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
-  //cartItems
+  user: state.user,
+  cartItems: state.cart.products
 })
 
-// const mapDispatchToProps = dispatch => ({
-//   getCart: userId => {
-//     dispatch(fetchCart(userId))
-//   }
-// })
+const mapDispatchToProps = dispatch => ({
+  getCart: userId => {
+    dispatch(getCartThunk(userId))
+  }
+})
 
-export default connect(mapStateToProps)(Cart)
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)
