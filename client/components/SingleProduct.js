@@ -29,10 +29,25 @@ class SingleProduct extends Component {
   //     toast.success(`${this.props.selectedProduct.name} added to cart!`)
   //   }
   // }
+  // addToCart = () => {
+  //   const productId = this.props.selectedProduct.id
+  //   const productQuantity = this.state.quantity
+
+  //   if (this.state.quantity === '') {
+  //     this.props.addToCart(productId, 1)
+  //     toast.success(`${this.props.selectedProduct.name} added to cart!`)
+  //   } else {
+  //     this.props.addToCart(productId, productQuantity)
+  //     toast.success(`${this.props.selectedProduct.name} added to cart!`)
+  //   }
+  // }
 
   addToCart = () => {
     const productId = this.props.selectedProduct.id
     const userId = this.props.user.id
+
+    // console.log(productId, userId)
+
     this.props.addToCart(productId, userId)
   }
 
