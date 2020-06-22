@@ -15,7 +15,11 @@ class Cart extends React.Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const userId = this.props.user.id
+    const {getCart} = this.props
+    getCart(userId)
+  }
 
   handleChange(event, quantity, productId) {
     event.preventDefault()
@@ -64,7 +68,7 @@ class Cart extends React.Component {
                           </option>
                           {// this below will list al of the items with their rrespextive props and increase the quant by one
                           [
-                            ...Array(
+                            ...(
                               items.find(item => item.id === cartItem.productId)
                                 .quantity + 1
                             ).keys()

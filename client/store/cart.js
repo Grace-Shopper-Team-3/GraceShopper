@@ -62,8 +62,8 @@ export const deleteCartProductThunk = (product, userId) => {
 export const updateQuantityThunk = (product, quantity, userId) => {
   return async dispatch => {
     try {
-      const res = await axios.put(`/api/users/cart/${userId}/${product.id}`, {
-        quantitiy: quantity
+      const res = await axios.patch(`/api/users/cart/${userId}/${product.id}`, {
+        quantity: quantity
       })
       const updatedQuant = res.data
       dispatch(updateQuantity(updatedQuant))
