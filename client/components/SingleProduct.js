@@ -16,10 +16,18 @@ class SingleProduct extends Component {
   componentDidMount() {
     this.props.fetchSingleProduct(this.props.match.params.id)
   }
-  // const handleClick = event => {
-  //   event.preventDefault()
-  //   props.addToCart({product: product, quantity: 1})
-  //   toast.success(`${product.name} added to cart!`)
+
+  // addToCart = () => {
+  //   const productId = this.props.selectedProduct.id
+  //   const productQuantity = this.state.quantity
+
+  //   if (this.state.quantity === '') {
+  //     this.props.addToCart(productId, 1)
+  //     toast.success(`${this.props.selectedProduct.name} added to cart!`)
+  //   } else {
+  //     this.props.addToCart(productId, productQuantity)
+  //     toast.success(`${this.props.selectedProduct.name} added to cart!`)
+  //   }
   // }
   // addToCart = () => {
   //   const productId = this.props.selectedProduct.id
