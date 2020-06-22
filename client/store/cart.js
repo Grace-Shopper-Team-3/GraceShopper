@@ -42,6 +42,9 @@ export const deleteCartProductThunk = productId => {
   }
 }
 
+// should we also have a checkout thunk here?
+// a thunk that resets the cart and sets the items of the cart to an actual order
+
 const initialState = {
   cart: [],
   cartTotal: 0,

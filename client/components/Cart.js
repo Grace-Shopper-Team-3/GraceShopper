@@ -26,7 +26,7 @@ class Cart extends React.Component {
             <div className="cart-summary">
               <p>Cart total: $50</p>
               <Link to={`/checkout/${user.id}`}>
-                <button>Checkout</button>
+                <button> Checkout </button>
               </Link>
             </div>
           </div>
