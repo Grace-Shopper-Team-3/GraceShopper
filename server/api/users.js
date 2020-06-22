@@ -74,14 +74,33 @@ router.put('/cart/:userId', async (req, res, next) => {
       }
     })
 
-    // add the product to the user cart order with magic method
-    await ProductOrder.create({
-      orderId: currentOrder.id,
-      productId: req.body.id,
-      quantity: 1,
-      purchasePrice: 10
-    })
+    // if the cart does not exist yet, create the cart
+    if (!currentOrder) {
+      const currentOrder = await Order.create({
+        userId: req.params.userId,
+        status: 'cart'
+      })
 
+      await ProductOrder.create({
+        orderId: currentOrder.id,
+        productId: req.body.id,
+        quantity: 1,
+        purchasePrice: product.price
+      })
+    }
+
+    // if the cart does exist, add the product to the cart
+
+    if (currentOrder) {
+      await ProductOrder.create({
+        orderId: currentOrder.id,
+        productId: req.body.id,
+        quantity: 1,
+        purchasePrice: product.price
+      })
+    }
+
+    // retrieve the newly added item
     const newItem = await ProductOrder.findOne({
       where: {
         productId: product.id,
