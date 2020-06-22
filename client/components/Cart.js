@@ -45,8 +45,6 @@ class Cart extends React.Component {
           <h1>My Cart</h1>
           <div className="cart-grid">
             <div className="cart-item">
-              <p>item name</p>
-              <p>price</p>
               <div>
                 <ul>
                   {cartItems.map(cartItem => (
