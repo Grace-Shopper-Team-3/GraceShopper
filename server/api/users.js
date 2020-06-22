@@ -19,7 +19,7 @@ router.get('/', adminOnly, async (req, res, next) => {
 })
 
 // get a single user
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', adminOnly, async (req, res, next) => {
   try {
     const singleUser = await User.findByPk(req.params.id)
     res.json(singleUser)
@@ -42,8 +42,8 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
   }
 })
 
-// get a user's cart
-router.get('/cart/:userId', async (req, res, next) => {
+// get a user's cart for admin settings
+router.get('/cart/:userId', adminOnly, async (req, res, next) => {
   try {
     const cartItems = await Product.findAll({
       include: {
@@ -55,6 +55,60 @@ router.get('/cart/:userId', async (req, res, next) => {
     })
 
     res.json(cartItems)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// add a product to a user's cart
+router.put('/cart/:userId', adminOnly, async (req, res, next) => {
+  try {
+    // find the product in the db
+    const product = await Product.findByPk(req.body.id)
+
+    // find the user cart order
+    const currentOrder = await Order.findOne({
+      where: {
+        userId: req.params.userId,
+        status: 'cart'
+      }
+    })
+
+    // if the cart does not exist yet, create the cart
+    if (!currentOrder) {
+      const currentOrder = await Order.create({
+        userId: req.params.userId,
+        status: 'cart'
+      })
+
+      await ProductOrder.create({
+        orderId: currentOrder.id,
+        productId: req.body.id,
+        quantity: 1,
+        purchasePrice: product.price
+      })
+    }
+
+    // if the cart does exist, add the product to the cart
+
+    if (currentOrder) {
+      await ProductOrder.create({
+        orderId: currentOrder.id,
+        productId: req.body.id,
+        quantity: 1,
+        purchasePrice: product.price
+      })
+    }
+
+    // retrieve the newly added item
+    const newItem = await ProductOrder.findOne({
+      where: {
+        productId: product.id,
+        orderId: currentOrder.id
+      }
+    })
+
+    res.json(newItem)
   } catch (error) {
     next(error)
   }
