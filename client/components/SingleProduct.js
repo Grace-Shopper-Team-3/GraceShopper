@@ -1,17 +1,17 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {getSingleProduct, removeSingleProduct} from '../store/singleProduct'
+import {getSingleProduct} from '../store/singleProduct'
 import {toast} from 'react-toastify'
-import {addCartThunk} from '../store/cart'
+import {addToCartThunk} from '../store/cart'
 
 class SingleProduct extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedProduct: this.props.selectedProduct
-    }
-  }
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {
+  //     selectedProduct: this.props.selectedProduct
+  //   }
+  // }
 
   componentDidMount() {
     this.props.fetchSingleProduct(this.props.match.params.id)
@@ -21,36 +21,41 @@ class SingleProduct extends Component {
   //   props.addToCart({product: product, quantity: 1})
   //   toast.success(`${product.name} added to cart!`)
   // }
+  // addToCart = () => {
+  //   const productId = this.props.selectedProduct.id
+  //   const productQuantity = this.state.quantity
+
+  //   if (this.state.quantity === '') {
+  //     this.props.addToCart(productId, 1)
+  //     toast.success(`${this.props.selectedProduct.name} added to cart!`)
+  //   } else {
+  //     this.props.addToCart(productId, productQuantity)
+  //     toast.success(`${this.props.selectedProduct.name} added to cart!`)
+  //   }
+  // }
+
   addToCart = () => {
     const productId = this.props.selectedProduct.id
-    const productQuantity = this.state.quantity
-
-    if (this.state.quantity === '') {
-      this.props.addToCart(productId, 1)
-      toast.success(`${this.props.selectedProduct.name} added to cart!`)
-    } else {
-      this.props.addToCart(productId, productQuantity)
-      toast.success(`${this.props.selectedProduct.name} added to cart!`)
-    }
-  }
-  render() {
-    const productName = this.props.selectedProduct.name
-    const productImageUrl = this.props.selectedProduct.imageUrl
-    const productPrice = this.props.selectedProduct.price
-    const productDescription = this.props.selectedProduct.description
-    const productInventory = this.props.selectedProduct.warehouseInv
     const userId = this.props.user.id
-    const productId = this.props.selectedProduct.id
+
+    // console.log(productId, userId)
+
+    this.props.addToCart(productId, userId)
+  }
+
+  render() {
+    const {selectedProduct} = this.props
+    const {name, imageUrl, price, description} = selectedProduct
 
     return (
       <div className="page">
         <div className="single-product">
-          <img src={productImageUrl} alt="product-photo" />
+          <img src={imageUrl} alt="product-photo" />
           <div className="single-product-details">
-            <h1>{productName}</h1>
-            <h3>${productPrice}.00</h3>
-            <p>{productDescription}</p>
-            <button type="button" onClick={this.addToCart(productId, userId)}>
+            <h1>{name}</h1>
+            <h3>${price}.00</h3>
+            <p>{description}</p>
+            <button type="button" onClick={this.addToCart}>
               Add to Cart
             </button>
           </div>
@@ -70,9 +75,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchSingleProduct: id => dispatch(getSingleProduct(id)),
-    addToCart: (productId, userId) => dispatch(addCartThunk(productId, userId))
-
-    // addToCart: cart => dispatch(addToCart(cart))
+    addToCart: (productId, userId) =>
+      dispatch(addToCartThunk(productId, userId))
   }
 }
 
