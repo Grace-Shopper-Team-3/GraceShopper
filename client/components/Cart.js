@@ -1,16 +1,38 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-// import thunks from store
+import {
+  deleteCartProductThunk,
+  updateQuantityThunk,
+  getCartThunk
+} from '../store/cart'
 
 class Cart extends React.Component {
+  constructor() {
+    super()
+    this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+  }
+
   componentDidMount() {}
+
+  handleChange(event, quantity, productId) {
+    event.preventDefault()
+    this.props.updateQuantity(productId, quantity)
+  }
+
+  handleClick(event, productId) {
+    event.preventDefault()
+    this.props.removeItem(productId)
+  }
 
   render() {
     const {user} = this.props
-
-    const cartItems = ['item']
-    // const {cartItems} = this.props
+    const items = this.props.items
+    const cartItems = this.props.cart
+    if (this.props.cart.isLoading) {
+      return <h1>Loading...</h1>
+    }
 
     if (cartItems.length > 0) {
       return (
@@ -20,7 +42,42 @@ class Cart extends React.Component {
             <div className="cart-item">
               <p>item name</p>
               <p>price</p>
-              <p>quantity</p>
+              <div>
+                <ul>
+                  {cartItems.map(cartItem => (
+                    <div key={cartItem.productId}>
+                      <form>
+                        <label>Quantity</label>
+                        <select
+                          name="quantity"
+                          onChange={event =>
+                            this.handleChange(
+                              event,
+                              event.target.value,
+                              cartItem.productId
+                            )
+                          }
+                        >
+                          <option value={cartItem.quantity}>
+                            {cartItem.quantity}
+                          </option>
+                          {// this below will list al of the items with their rrespextive props and increase the quant by one
+                          [
+                            ...Array(
+                              items.find(item => item.id === cartItem.productId)
+                                .quantity + 1
+                            ).keys()
+                          ].map(num => (
+                            <option key={num} value={num}>
+                              {num}
+                            </option>
+                          ))}
+                        </select>
+                      </form>
+                    </div>
+                  ))}
+                </ul>
+              </div>
               <p>image</p>
             </div>
             <div className="cart-summary">
@@ -43,14 +100,16 @@ class Cart extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
-  //cartItems
+  user: state.user,
+  cart: state.cart,
+  products: state.products
 })
 
-// const mapDispatchToProps = dispatch => ({
-//   getCart: userId => {
-//     dispatch(fetchCart(userId))
-//   }
-// })
+const mapDispatchToProps = dispatch => ({
+  getCart: userId => dispatch(getCartThunk(userId)),
+  updateQuantity: (productId, quantity) =>
+    dispatch(updateQuantityThunk(productId, quantity)),
+  removeItem: productId => dispatch(deleteCartProductThunk(productId))
+})
 
-export default connect(mapStateToProps)(Cart)
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)
