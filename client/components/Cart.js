@@ -15,6 +15,14 @@ class Cart extends React.Component {
     this.props.deleteItem(product.id, userId)
   }
 
+  total = () => {
+    const total = this.props.cartItems.reduce(function total(acc, val) {
+      const quantity = val.orders[0].productorder.quantity
+      return acc + val.price * quantity
+    }, 0)
+    return total
+  }
+
   render() {
     const {user} = this.props
     const {cartItems} = this.props
@@ -29,6 +37,7 @@ class Cart extends React.Component {
                 <div>
                   <h3>{item.name}</h3>
                   <p>${item.price}.00</p>
+                  <p>Quantity: {item.orders[0].productorder.quantity}</p>
                   <img src={item.imageUrl} alt="product" />
                 </div>
                 <div className="cart-item-buttons">
@@ -46,6 +55,7 @@ class Cart extends React.Component {
           </div>
           <div className="cart-checkout-button">
             <Link to={`/checkout/${user.id}`}>
+              <h2>Order Total: ${this.total()}.00</h2>
               <button>Checkout</button>
             </Link>
           </div>
