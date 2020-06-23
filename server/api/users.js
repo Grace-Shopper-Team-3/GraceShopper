@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const {User, Order, Product, ProductOrder} = require('../db/models')
 
-const {adminOnly} = require('../utils')
+const {adminOnly, currentUserOnly} = require('../utils')
 
 // get all users for admin settings
 router.get('/', adminOnly, async (req, res, next) => {
@@ -43,7 +43,7 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
 })
 
 // get a user's cart
-router.get('/cart/:userId', async (req, res, next) => {
+router.get('/cart/:userId', currentUserOnly, async (req, res, next) => {
   try {
     const cartItems = await Product.findAll({
       include: {
@@ -62,7 +62,7 @@ router.get('/cart/:userId', async (req, res, next) => {
 })
 
 // add a product to a user's cart
-router.put('/cart/:userId', adminOnly, async (req, res, next) => {
+router.put('/cart/:userId', currentUserOnly, async (req, res, next) => {
   try {
     // find the product in the db
     const product = await Product.findByPk(req.body.id)
@@ -117,21 +117,25 @@ router.put('/cart/:userId', adminOnly, async (req, res, next) => {
 
 //delete item from user's cart
 
-router.delete('/cart/:userId/:productId', async (req, res, next) => {
-  try {
-    const removedProduct = await Product.findByPk(req.params.productId)
-    const currentOrder = await Order.findOne({
-      where: {userId: req.params.userId, status: 'cart'}
-    })
-    await currentOrder.removeProduct(removedProduct)
-    res.sendStatus(204)
-  } catch (error) {
-    next(error)
+router.delete(
+  '/cart/:userId/:productId',
+  currentUserOnly,
+  async (req, res, next) => {
+    try {
+      const removedProduct = await Product.findByPk(req.params.productId)
+      const currentOrder = await Order.findOne({
+        where: {userId: req.params.userId, status: 'cart'}
+      })
+      await currentOrder.removeProduct(removedProduct)
+      res.sendStatus(204)
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 // route to checkout cart
-router.put('/checkout/:userId/', async (req, res, next) => {
+router.put('/checkout/:userId/', currentUserOnly, async (req, res, next) => {
   try {
     const order = await Order.findOne({
       where: {userId: req.params.userId, status: 'cart'}
