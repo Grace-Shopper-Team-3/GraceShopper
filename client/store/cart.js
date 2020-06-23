@@ -4,9 +4,7 @@ import axios from 'axios'
 const ADD_PRODUCT = 'ADD_PRODUCT'
 const GET_CART = 'GET_CART'
 const REMOVE_PRODUCT = 'REMOVE_PRODUCT'
-
-// const SET_CART = 'SET_CART'
-// const UPDATE_CART = 'UPDATE_CART'
+const CHECKOUT_CART = 'CHECKOUT_CART'
 
 //action creators
 
@@ -23,6 +21,11 @@ export const addProduct = product => ({
 export const removeProduct = productId => ({
   type: REMOVE_PRODUCT,
   productId
+})
+
+export const checkoutCart = userId => ({
+  type: CHECKOUT_CART,
+  cart
 })
 
 //thunks
@@ -61,6 +64,17 @@ export const deleteCartProductThunk = (productId, userId) => {
   }
 }
 
+export const checkoutCartThunk = userId => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.put(`api/users/checkout/${userId}`)
+      dispatch(checkoutCart(data))
+    } catch (error) {
+      console.log('Failed to checkout cart', error)
+    }
+  }
+}
+
 const initialState = {
   products: []
 }
@@ -79,6 +93,8 @@ const cartReducer = (state = initialState, action) => {
       )
       return {...state, products: updatedCart}
     }
+    case CHECKOUT_CART:
+      return initialState
     default:
       return state
   }

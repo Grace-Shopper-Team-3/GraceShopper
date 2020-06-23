@@ -46,7 +46,9 @@ class Checkout extends React.Component {
           </div>
           <OrderForm />
           <Link to="/confirmation">
-            <button>Confirm Purchase</button>
+            <button onClick={() => this.props.checkoutCart(this.props.user.id)}>
+              Confirm Purchase
+            </button>
           </Link>
         </div>
       </div>
@@ -63,8 +65,7 @@ const mapDispatchToProps = dispatch => ({
   getCart: userId => {
     dispatch(getCartThunk(userId))
   },
-  checkoutCart: (userId, shippingInfo) =>
-    dispatch(checkoutCartThunk(userId, shippingInfo))
+  checkoutCart: userId => dispatch(checkoutCartThunk(userId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout)

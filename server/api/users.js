@@ -42,14 +42,15 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
   }
 })
 
-// get a user's cart for admin settings
-router.get('/cart/:userId', adminOnly, async (req, res, next) => {
+// get a user's cart
+router.get('/cart/:userId', async (req, res, next) => {
   try {
     const cartItems = await Product.findAll({
       include: {
         model: Order,
         where: {
-          userId: req.params.userId
+          userId: req.params.userId,
+          status: 'cart'
         }
       }
     })
@@ -119,12 +120,27 @@ router.put('/cart/:userId', adminOnly, async (req, res, next) => {
 router.delete('/cart/:userId/:productId', async (req, res, next) => {
   try {
     const removedProduct = await Product.findByPk(req.params.productId)
-
     const currentOrder = await Order.findOne({
       where: {userId: req.params.userId, status: 'cart'}
     })
     await currentOrder.removeProduct(removedProduct)
     res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// route to checkout cart
+router.put('/checkout/:userId/', async (req, res, next) => {
+  try {
+    const order = await Order.findOne({
+      where: {userId: req.params.userId, status: 'cart'}
+    })
+    order.status = 'purchased'
+    await order.save()
+    // const newEmptyOrder = await Order.create({userId: req.params.userId, status: 'cart'})
+    // await newEmptyOrder.setUser(req.params.userId)
+    // res.json(newEmptyOrder)
   } catch (error) {
     next(error)
   }
