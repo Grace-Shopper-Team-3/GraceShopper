@@ -83,8 +83,9 @@ export class OrderForm extends React.Component {
       orderProps.billState = this.state.shipState
       orderProps.billZip = this.state.shipZip
     }
+  }
 
-    render()
+  render() {
     return (
       <div>
         <h2> Please complete the form below</h2>
@@ -130,6 +131,7 @@ export class OrderForm extends React.Component {
     )
   }
 }
+
 const mapStateToProps = state => {
   return {
     user: state.user,
