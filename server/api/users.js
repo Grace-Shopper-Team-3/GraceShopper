@@ -138,9 +138,6 @@ router.put('/checkout/:userId/', async (req, res, next) => {
     })
     order.status = 'purchased'
     await order.save()
-    // const newEmptyOrder = await Order.create({userId: req.params.userId, status: 'cart'})
-    // await newEmptyOrder.setUser(req.params.userId)
-    // res.json(newEmptyOrder)
   } catch (error) {
     next(error)
   }
