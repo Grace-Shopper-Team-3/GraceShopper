@@ -20,21 +20,10 @@ export const addProduct = product => ({
   product
 })
 
-export const removeProduct = product => ({
+export const removeProduct = productId => ({
   type: REMOVE_PRODUCT,
-  product
+  productId
 })
-
-// export const setCart = cart => ({
-//   type: SET_CART,
-//   cart
-// })
-
-// export const updateCart = () => {
-//   return {
-//     type: UPDATE_CART
-//   }
-// }
 
 //thunks
 export const getCartThunk = userId => {
@@ -61,11 +50,11 @@ export const addToCartThunk = (productId, userId) => {
   }
 }
 
-export const deleteCartProductThunk = (product, userId) => {
+export const deleteCartProductThunk = (productId, userId) => {
   return async dispatch => {
     try {
-      await axios.delete(`/api/users/cart/${userId}/${product.id}`)
-      dispatch(removeProduct(product.id))
+      await axios.delete(`/api/users/cart/${userId}/${productId}`)
+      dispatch(removeProduct(productId))
     } catch (error) {
       console.log('Failed to remove item from cart', error)
     }

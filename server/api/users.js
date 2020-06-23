@@ -114,4 +114,20 @@ router.put('/cart/:userId', adminOnly, async (req, res, next) => {
   }
 })
 
+//delete item from user's cart
+
+router.delete('/cart/:userId/:productId', async (req, res, next) => {
+  try {
+    const removedProduct = await Product.findByPk(req.params.productId)
+
+    const currentOrder = await Order.findOne({
+      where: {userId: req.params.userId, status: 'cart'}
+    })
+    await currentOrder.removeProduct(removedProduct)
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router
