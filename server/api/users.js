@@ -43,7 +43,7 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
 })
 
 // get a user's cart
-router.get('/cart/:userId', async (req, res, next) => {
+router.get('/cart/:userId', currentUserOnly, async (req, res, next) => {
   try {
     const cartItems = await Product.findAll({
       include: {
