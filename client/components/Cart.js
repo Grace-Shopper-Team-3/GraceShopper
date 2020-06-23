@@ -37,6 +37,7 @@ class Cart extends React.Component {
                 <div>
                   <h3>{item.name}</h3>
                   <p>${item.price}.00</p>
+                  <p>Quantity: {item.orders[0].productorder.quantity}</p>
                   <img src={item.imageUrl} alt="product" />
                 </div>
                 <div className="cart-item-buttons">
