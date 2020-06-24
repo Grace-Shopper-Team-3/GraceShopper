@@ -41,8 +41,17 @@ class Cart extends React.Component {
                   <img src={item.imageUrl} alt="product" />
                 </div>
                 <div className="cart-item-buttons">
-                  <button>Increase Quantity</button>
-                  <button>Decrease Quantity</button>
+                  <input type="button" onClick="decrementValue()" value="-" />
+                  <input
+                    type="text"
+                    name="quantity"
+                    value="1"
+                    maxLength="2"
+                    max="10"
+                    size="1"
+                    id="number"
+                  />
+                  <input type="button" onClick="incrementValue()" value="+" />
                   <button
                     type="submit"
                     onClick={() => this.deleteFromCart(item)}
